@@ -2,8 +2,8 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
+from keras import layers
+from keras.models import Sequential
 from regularization import DataAgumentationGenerator
 
 IMG_DIM = 48
@@ -11,44 +11,38 @@ EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear',
                           3: 'Happy', 4: 'Sad', 5: 'Surprise', 6: 'Neutral'}
 
 
-def generateModel(num_emotion=7):
+def generateModel(num_emotion=3):
     return Sequential(
         [
-            layers.InputLayer(input_shape=(IMG_DIM, IMG_DIM, 1)),
-
-            layers.Conv2D(filters=64, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
-
-            layers.Conv2D(filters=128, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
-
-            layers.Conv2D(filters=512, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
-
-            layers.Conv2D(filters=512, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
-
-            layers.SpatialDropout2D(rate=0.1),
-
-            layers.Flatten(),
-
-            layers.Dense(units=512, activation='relu'),
-            layers.BatchNormalization(),
-            layers.Dropout(rate=0.2),
-
-            layers.Dense(units=128, activation='relu'),
-            layers.BatchNormalization(),
-            layers.Dropout(rate=0.2),
-
-            layers.Dense(units=num_emotion, activation='softmax')
+        layers.InputLayer(input_shape=(IMG_DIM, IMG_DIM, 1)),
+        layers.Conv2D(filters=64, kernel_size=(3, 3),strides=(1, 1), padding='SAME'),
+        layers.Conv2D(filters=64, kernel_size=(3, 3),strides=(1, 1), padding='SAME'),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
+        layers.Conv2D(filters=128, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
+        layers.Conv2D(filters=128, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
+        layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
+        layers.BatchNormalization(),
+        layers.Conv2D(filters=256, kernel_size=(3, 3),strides=(1, 1), padding='SAME'),
+        layers.Conv2D(filters=256, kernel_size=(3, 3), activation='relu', strides=(1, 1), padding='SAME'),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
+        layers.Conv2D(filters=512, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
+        layers.Conv2D(filters=512, kernel_size=(3, 3), strides=(1, 1), padding='SAME'),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2)),
+        layers.SpatialDropout2D(rate=0.1),
+        layers.Flatten(),
+        layers.Dense(units=512, activation='relu'),
+        layers.BatchNormalization(),
+        layers.Dropout(rate=0.2),
+        layers.Dense(units=128, activation='relu'),
+        layers.BatchNormalization(),
+        layers.Dropout(rate=0.2),
+        layers.Dense(units=num_emotion, activation='softmax')  
         ]
     )
 
