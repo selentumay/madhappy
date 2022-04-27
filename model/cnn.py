@@ -71,7 +71,7 @@ def generateModel(num_emotion=4):
 
 def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
     data_augmentation_gen = DataAgumentationGenerator()
-    model.compile(optimizer='adam',
+    model.compile(optimizer='adam', 
                   loss='categorical_crossentropy', metrics=['accuracy'])
 
     # Keras callbacks for training
@@ -89,6 +89,7 @@ def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
         data_augmentation_gen.flow(x_train, y_train, batch_size),
         epochs=epochs,
         verbose=1,
+        callbacks=callback_list,
         validation_data=(x_val, y_val))
 
     return model, history
