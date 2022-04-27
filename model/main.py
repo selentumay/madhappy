@@ -9,11 +9,12 @@ import sys
 sys.path.append('../data')
 from preprocess import get_data
 
-_DEFAULT_TRAIN_FILEPATH = ['../data/train_data_1.gz',
-                           '../data/train_data_2.gz', '../data/train_data_3.gz', '../data/train_data_4.gz']
-_DEFAULT_TEST_FILEPATH = '../data/test_data.gz'
-_DEFAULT_VALIDATION_FILEPATH = '../data/validation_data.gz'
+_DEFAULT_TRAIN_FILEPATH = ['train_data_1.gz',
+                           'train_data_2.gz', 'train_data_3.gz', 'train_data_4.gz']
+_DEFAULT_TEST_FILEPATH = 'test_data.gz'
+_DEFAULT_VALIDATION_FILEPATH = 'validation_data.gz'
 EMOTIONS = ['Angry', 'Digust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+EMOTIONS = ['Happy', 'Neutral', 'Sad', 'Surprise']
 
 def viz_training_results(history, epochs=50):
     acc = history.history['accuracy']
@@ -85,24 +86,15 @@ def main():
     viz_model_summary(model=model)
     viz_model(model=model)
 
-<<<<<<< Updated upstream
-    model, history = trainModel(model=model, x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, epochs=35)
-    viz_training_results(history=history, epochs=35)
-=======
     model, history = trainModel(model=model, x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, epochs=50)
     viz_training_results(history=history, epochs=50)
->>>>>>> Stashed changes
 
     y_pred, y_true = testModel(model=model, x_test=x_test, y_test=y_test)
     test_acc = accuracy_score(y_true, y_pred)
     print('Model Test Accuracy: ', test_acc)
     viz_test_confusion_matrix(y_pred=y_pred, y_true=y_true, labels=EMOTIONS)
 
-<<<<<<< Updated upstream
-    saveModel(model=model)
-=======
     saveModel(model=model, file_name='cnn-newarc-3emots-2.h5')
->>>>>>> Stashed changes
 
 if __name__ == "__main__":
     main()

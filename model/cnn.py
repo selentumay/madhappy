@@ -11,9 +11,10 @@ from tensorboard_utils import \
 IMG_DIM = 48
 EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear',
                           3: 'Happy', 4: 'Sad', 5: 'Surprise', 6: 'Neutral'}
+EMOTION_CLASSIFICATION= {0: 'Happy', 1: 'Neutral', 2: 'Sad', 3: 'Surprise'}
 
 
-def generateModel(num_emotion=7):
+def generateModel(num_emotion=4):
     return Sequential(
         [
             layers.InputLayer(input_shape=(IMG_DIM, IMG_DIM, 1)),
@@ -76,16 +77,13 @@ def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
     # Keras callbacks for training
     callback_list = [
         tf.keras.callbacks.TensorBoard(
-            log_dir=logs_path,
+            log_dir='logs',
             update_freq='batch',
             profile_batch=0),
-        ImageLabelingLogger(logs_path, datasets),
-        CustomModelSaver(checkpoint_path, ARGS.task, hp.max_num_weights)
+        CustomModelSaver('checkpoints', 1, 3)
     ]
 
-    # Include confusion logger in callbacks if flag set
-    if ARGS.confusion:
-        callback_list.append(ConfusionMatrixLogger(logs_path, datasets))
+    
 
     history = model.fit_generator(
         data_augmentation_gen.flow(x_train, y_train, batch_size),

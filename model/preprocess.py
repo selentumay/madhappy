@@ -8,8 +8,8 @@ test_filepath = 'test_data.gz'
 validation_path = 'validation_data.gz'
 image_hw = 48
 EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear', 3: 'Happy', 4: 'Sad', 5: 'Surprise', 6: 'Neutral'}
-CONVERSION_DICT = {3: 0, 4: 1, 6: 2}
-EMOTION_CLASSIFICATION_REDUCED = {0: 'Happy', 1: 'Sad', 2: 'Neutral'}
+CONVERSION_DICT = {3: 0, 4: 1, 6: 2, 5: 3}
+EMOTION_CLASSIFICATION_REDUCED = {0: 'Happy', 1: 'Neutral', 2: 'Sad', 3: 'Surprise'}
 
 
 def _split_data(df: pd.DataFrame):
@@ -34,10 +34,10 @@ def get_data(train_data_file_paths: list = train_filepath,
     val_data = pd.read_csv(val_data_file_path, compression='gzip')
     
     
-    train_data = train_data[train_data['emotion'].isin([3, 4, 6])]
+    train_data = train_data[train_data['emotion'].isin([3, 4, 6, 5])]
     train_data['emotion'] = train_data['emotion'].replace(CONVERSION_DICT)
 
-    val_data = val_data[val_data['emotion'].isin([3, 4, 6])]
+    val_data = val_data[val_data['emotion'].isin([3, 4, 6, 5])]
     val_data['emotion'] = val_data['emotion'].replace(CONVERSION_DICT)
 
     
@@ -47,7 +47,7 @@ def get_data(train_data_file_paths: list = train_filepath,
     #test data
     test_data = pd.read_csv(test_data_file_path, compression='gzip')
 
-    test_data = test_data[test_data['emotion'].isin([3, 4, 6])]
+    test_data = test_data[test_data['emotion'].isin([3, 4, 6, 5])]
     test_data['emotion'] = test_data['emotion'].replace(CONVERSION_DICT)
 
     x_test, y_test = _split_data(test_data)

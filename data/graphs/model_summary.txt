@@ -24,36 +24,41 @@ _________________________________________________________________
  batch_normalization_1 (Batc  (None, 12, 12, 128)      512       
  hNormalization)                                                 
                                                                  
- conv2d_4 (Conv2D)           (None, 12, 12, 256)       295168    
+ activation_1 (Activation)   (None, 12, 12, 128)       0         
                                                                  
- conv2d_5 (Conv2D)           (None, 12, 12, 256)       590080    
-                                                                 
- batch_normalization_2 (Batc  (None, 12, 12, 256)      1024      
- hNormalization)                                                 
-                                                                 
- activation_1 (Activation)   (None, 12, 12, 256)       0         
-                                                                 
- max_pooling2d_2 (MaxPooling  (None, 6, 6, 256)        0         
+ max_pooling2d_2 (MaxPooling  (None, 6, 6, 128)        0         
  2D)                                                             
                                                                  
- conv2d_6 (Conv2D)           (None, 6, 6, 512)         1180160   
+ conv2d_4 (Conv2D)           (None, 6, 6, 256)         295168    
                                                                  
- conv2d_7 (Conv2D)           (None, 6, 6, 512)         2359808   
+ conv2d_5 (Conv2D)           (None, 6, 6, 256)         590080    
                                                                  
- batch_normalization_3 (Batc  (None, 6, 6, 512)        2048      
+ batch_normalization_2 (Batc  (None, 6, 6, 256)        1024      
  hNormalization)                                                 
                                                                  
- activation_2 (Activation)   (None, 6, 6, 512)         0         
+ activation_2 (Activation)   (None, 6, 6, 256)         0         
                                                                  
- max_pooling2d_3 (MaxPooling  (None, 3, 3, 512)        0         
+ max_pooling2d_3 (MaxPooling  (None, 3, 3, 256)        0         
  2D)                                                             
                                                                  
- spatial_dropout2d (SpatialD  (None, 3, 3, 512)        0         
+ conv2d_6 (Conv2D)           (None, 3, 3, 512)         1180160   
+                                                                 
+ conv2d_7 (Conv2D)           (None, 3, 3, 512)         2359808   
+                                                                 
+ batch_normalization_3 (Batc  (None, 3, 3, 512)        2048      
+ hNormalization)                                                 
+                                                                 
+ activation_3 (Activation)   (None, 3, 3, 512)         0         
+                                                                 
+ max_pooling2d_4 (MaxPooling  (None, 1, 1, 512)        0         
+ 2D)                                                             
+                                                                 
+ spatial_dropout2d (SpatialD  (None, 1, 1, 512)        0         
  ropout2D)                                                       
                                                                  
- flatten (Flatten)           (None, 4608)              0         
+ flatten (Flatten)           (None, 512)               0         
                                                                  
- dense (Dense)               (None, 512)               2359808   
+ dense (Dense)               (None, 512)               262656    
                                                                  
  batch_normalization_4 (Batc  (None, 512)              2048      
  hNormalization)                                                 
@@ -67,10 +72,10 @@ _________________________________________________________________
                                                                  
  dropout_1 (Dropout)         (None, 128)               0         
                                                                  
- dense_2 (Dense)             (None, 3)                 387       
+ dense_2 (Dense)             (None, 4)                 516       
                                                                  
 =================================================================
-Total params: 7,116,483
-Trainable params: 7,113,283
+Total params: 5,019,460
+Trainable params: 5,016,260
 Non-trainable params: 3,200
 _________________________________________________________________

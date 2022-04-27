@@ -11,7 +11,7 @@ import sklearn.metrics
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
-import hyperparameters as hp
+
 
 
 def plot_to_image(figure):
