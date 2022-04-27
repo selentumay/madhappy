@@ -72,7 +72,7 @@ def generateModel(num_emotion=4):
 def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
     data_augmentation_gen = DataAgumentationGenerator()
     model.compile(optimizer='adam', 
-                  loss='categorical_crossentropy', metrics=['accuracy'])
+                  loss='categorical_crossentropy', metrics=['Accuracy'])
 
     # Keras callbacks for training
     callback_list = [
@@ -85,7 +85,7 @@ def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
 
     
 
-    history = model.fit_generator(
+    history = model.fit(
         data_augmentation_gen.flow(x_train, y_train, batch_size),
         epochs=epochs,
         verbose=1,

@@ -40,8 +40,6 @@ class ImageLabelingLogger(tf.keras.callbacks.Callback):
 
         print("Done setting up image labeling logger.")
 
-    def on_epoch_end(self, epoch, logs=None):
-        self.log_image_labels(epoch, logs)
 
     def log_image_labels(self, epoch_num, logs):
         """ Writes a plot of test images and their predicted labels
@@ -204,7 +202,7 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
         min_acc_file, max_acc_file, max_acc, num_weights = \
             self.scan_weight_files()
 
-        cur_acc = logs["val_sparse_categorical_accuracy"]
+        cur_acc = logs["Accuracy"]
 
         # Only save weights if test accuracy exceeds the previous best
         # weight file
@@ -212,13 +210,8 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
             save_name = "weights.e{0:03d}-acc{1:.4f}.h5".format(
                 epoch, cur_acc)
 
-            if self.task == '1':
-                self.model.save_weights(
+            self.model.save_weights(
                     self.checkpoint_dir + os.sep + "your." + save_name)
-            else:
-                # Only save weights of classification head of VGGModel
-                self.model.head.save_weights(
-                    self.checkpoint_dir + os.sep + "vgg." + save_name)
 
             # Ensure max_num_weights is not exceeded by removing
             # minimum weight
