@@ -5,6 +5,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from regularization import DataAgumentationGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorboard_utils import \
     ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
 
@@ -70,7 +71,7 @@ def generateModel(num_emotion=4):
 
 
 def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
-    data_augmentation_gen = DataAgumentationGenerator()
+    data_augmentation_gen = ImageDataGenerator(rotation_range=30, zoom_range=0.20, fill_mode="nearest",shear_range=0.20,horizontal_flip=True, width_shift_range=0.1, height_shift_range=0.1)
     model.compile(optimizer='adam', 
                   loss='categorical_crossentropy', metrics=['Accuracy'])
 
