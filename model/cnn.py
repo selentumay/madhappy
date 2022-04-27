@@ -5,6 +5,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from regularization import DataAgumentationGenerator
+from tensorboard_utils import \
+        ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
 
 IMG_DIM = 48
 EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear',
@@ -55,6 +57,20 @@ def generateModel(num_emotion=7):
 def trainModel(model, x_train, y_train, x_val, y_val, epochs=35, batch_size=64):
     data_augmentation_gen = DataAgumentationGenerator()
     model.compile(optimizer='adam', loss='categorical_crossentropy',metrics=['accuracy'])
+
+    # Keras callbacks for training
+    callback_list = [
+        tf.keras.callbacks.TensorBoard(
+            log_dir=logs_path,
+            update_freq='batch',
+            profile_batch=0),
+        ImageLabelingLogger(logs_path, datasets),
+        CustomModelSaver(checkpoint_path, ARGS.task, hp.max_num_weights)
+    ]
+
+    # Include confusion logger in callbacks if flag set
+    if ARGS.confusion:
+        callback_list.append(ConfusionMatrixLogger(logs_path, datasets))
 
     history = model.fit_generator(
                         data_augmentation_gen.flow(x_train, y_train, batch_size),
