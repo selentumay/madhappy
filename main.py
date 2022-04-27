@@ -14,7 +14,7 @@ _DEFAULT_TRAIN_FILEPATH = ['train_data_1.gz',
 _DEFAULT_TEST_FILEPATH = 'test_data.gz'
 _DEFAULT_VALIDATION_FILEPATH = 'validation_data.gz'
 EMOTIONS = ['Angry', 'Digust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
-EMOTIONS = ['Happy', 'Neutral', 'Sad', 'Surprise']
+EMOTIONS = ['Happy', 'Angry', 'Sad', 'Surprise']
 
 def viz_training_results(history, epochs=50):
     acc = history.history['accuracy']

@@ -6,13 +6,12 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from regularization import DataAgumentationGenerator
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorboard_utils import \
-    ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
+from tensorboard_utils import CustomModelSaver
 
 IMG_DIM = 48
 EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear',
                           3: 'Happy', 4: 'Sad', 5: 'Surprise', 6: 'Neutral'}
-EMOTION_CLASSIFICATION= {0: 'Happy', 1: 'Neutral', 2: 'Sad', 3: 'Surprise'}
+EMOTION_CLASSIFICATION= {0: 'Happy', 1: 'Angry', 2: 'Sad', 3: 'Surprise'}
 
 
 def generateModel(num_emotion=4):
