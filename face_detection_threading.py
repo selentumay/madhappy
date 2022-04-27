@@ -4,14 +4,16 @@ import tensorflow as tf
 import cv2
 import numpy as np
 import threading
-import os
+from cnn import generateModel
 
-model = tf.keras.models.load_model('data/cnn-newarc-3emots.h5', compile=False)
+
+model = generateModel()
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e014-acc0.7584.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
 
-EMOTION_CLASSIFICATION = {0: 'Happy', 1: 'Sad', 2: 'Neutral'} #{0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: 'Neutral'}
+EMOTION_CLASSIFICATION = {0: 'Happy', 1: 'Neutral', 2: 'Sad', 3: 'Surprise'} #{0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: 'Neutral'}
 video_cap = cv2.VideoCapture(0)
 
 
