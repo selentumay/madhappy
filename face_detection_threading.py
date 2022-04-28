@@ -8,12 +8,12 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e014-acc0.7584.h5')
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e049-acc0.8962.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
 
-EMOTION_CLASSIFICATION = {0: 'Happy', 1: 'Neutral', 2: 'Sad', 3: 'Surprise'} #{0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: 'Neutral'}
+EMOTION_CLASSIFICATION = {0: 'Happy', 1: 'Sad', 2: 'Surprise'} #{0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: 'Neutral'}
 video_cap = cv2.VideoCapture(0)
 
 

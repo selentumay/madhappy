@@ -11,10 +11,10 @@ from tensorboard_utils import CustomModelSaver
 IMG_DIM = 48
 EMOTION_CLASSIFICATION = {0: 'Angry', 1: 'Digust', 2: 'Fear',
                           3: 'Happy', 4: 'Sad', 5: 'Surprise', 6: 'Neutral'}
-EMOTION_CLASSIFICATION= {0: 'Happy', 1: 'Angry', 2: 'Sad', 3: 'Surprise'}
+EMOTION_CLASSIFICATION= {0: 'Happy',  1: 'Sad', 2: 'Surprise'}
 
 
-def generateModel(num_emotion=4):
+def generateModel(num_emotion=3):
     return Sequential(
         [
             layers.InputLayer(input_shape=(IMG_DIM, IMG_DIM, 1)),
