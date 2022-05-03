@@ -31,15 +31,14 @@ def apply_mask(face: np.array, mask: np.array) -> np.array:
     new_mask_shape = (new_mask_w, new_mask_h)
     resized_mask = cv2.resize(mask, new_mask_shape)
 
-    # Add mask to face - ensure mask is centered
     face_with_mask = face.copy()
     non_white_pixels = (resized_mask < 230).all(axis=2)
     off_h = int((face_h - new_mask_h) / 2)
     off_w = int((face_w - new_mask_w) / 2)
-    face_with_mask[off_h: off_h+new_mask_h, off_w: off_w+new_mask_w][non_white_pixels] = \
-         resized_mask[non_white_pixels]
+    face_with_mask[off_h: off_h+new_mask_h, off_w: off_w+new_mask_w][non_white_pixels] = resized_mask[non_white_pixels]
 
     return face_with_mask
+
 
 def check_emotion(frame, res):
 
@@ -63,11 +62,11 @@ def check_emotion(frame, res):
         cropped_float = cropped_exp.astype(float)
 
         prediction = model.predict(cropped_float)
-        print(prediction)
+        #print(prediction)
 
         numzeros = 0
 
-        print(prediction)
+        #print(prediction)
 
 
         if np.count_nonzero(prediction) == 1:
@@ -87,10 +86,14 @@ t = threading.Thread(target=check_emotion, args=(frame, result))
 t.start()
 show_emotion = False
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-mask = mask = cv2.imread('filters/glasses.png')
+cowboy = cv2.imread('filters/cowboy3.png')
+dog = cv2.imread('filters/dog.png')
+empty = cv2.imread('filters/empty.png')
+happy = cv2.imread('filters/beaches.png')
 
 while True:
     ok, frame = video_cap.read()
+    frame_h, frame_w, _ = frame.shape
     
     if not(t.is_alive()):
         t.join()
@@ -105,12 +108,22 @@ while True:
         minNeighbors=4
     )
 
-
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        frame[y1:y2, x1:x2] = apply_mask(frame[y1:y2, x1:x2], mask)
+        rect = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        offset = -130
+        mask = empty
+        if result[-1] == 'Sad':
+            mask = dog
+        if result[-1] == 'Surprise':    
+            mask = cowboy
+        if result[-1] == 'Happy':    
+            mask = happy
+        if x1<0 or y1+offset<0 or x2> frame_w or y2>frame_h:
+            continue
+        
+        frame[y1+offset:y2, x1:x2] = apply_mask(frame[y1+offset:y2, x1:x2], mask)
     cv2.putText(frame, result[-1], (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.imshow('Video',frame)
         
