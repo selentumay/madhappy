@@ -8,7 +8,7 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/selentumay/cs1430/madhappy/data/checkpoints/your.weights.e011-acc0.8602.h5')
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e017-acc0.8708.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
@@ -51,7 +51,7 @@ def check_emotion(frame, res):
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
         
         face = gray[y1:y2, x1:x2]
@@ -64,16 +64,12 @@ def check_emotion(frame, res):
         prediction = model.predict(cropped_float)
         #print(prediction)
 
-        numzeros = 0
-
-        #print(prediction)
-
 
         if np.count_nonzero(prediction) == 1:
             
-            emotion_ind = int(np.argmax(prediction))
+            i = int(np.argmax(prediction))
 
-            result.append(EMOTION_CLASSIFICATION[emotion_ind])
+            result.append(EMOTION_CLASSIFICATION[i])
 
         else:
             result.append('Neutral')
@@ -81,7 +77,7 @@ def check_emotion(frame, res):
         return
 
 ok, frame = video_cap.read()
-result =[""]
+result =["Neutral", "Neutral", "Neutral"]
 t = threading.Thread(target=check_emotion, args=(frame, result))
 t.start()
 show_emotion = False
@@ -108,23 +104,32 @@ while True:
         minNeighbors=4
     )
 
+    if len(result) > 10:
+        result = result[-8:]
+
+
+    find_emot = {em:result[-3:].count(em) for em in result[-3:]}
+    if 'Sad' in find_emot:
+        find_emot = 'Sad'
+    else: find_emot = sorted(find_emot, key = lambda t: t[1])[-1]
+
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
-        rect = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        #rect = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
         offset = -130
         mask = empty
-        if result[-1] == 'Sad':
+        if find_emot == 'Sad':
             mask = dog
-        if result[-1] == 'Surprise':    
+        if find_emot == 'Surprise':    
             mask = cowboy
-        if result[-1] == 'Happy':    
+        if find_emot == 'Happy':    
             mask = happy
         if x1<0 or y1+offset<0 or x2> frame_w or y2>frame_h:
             continue
         
         frame[y1+offset:y2, x1:x2] = apply_mask(frame[y1+offset:y2, x1:x2], mask)
-    cv2.putText(frame, result[-1], (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, find_emot, (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.imshow('Video',frame)
         
 
