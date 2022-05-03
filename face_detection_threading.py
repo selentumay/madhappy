@@ -1,5 +1,6 @@
 from ast import arg
 from concurrent.futures import thread
+from itertools import count
 import tensorflow as tf
 import cv2
 import numpy as np
@@ -8,7 +9,7 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/selentumay/cs1430/madhappy/data/checkpoints/your.weights.e011-acc0.8602.h5')
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e017-acc0.8708.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
@@ -41,12 +42,6 @@ def check_emotion(frame, res):
         cropped_float = cropped_exp.astype(float)
 
         prediction = model.predict(cropped_float)
-        print(prediction)
-
-        numzeros = 0
-
-        print(prediction)
-
 
         if np.count_nonzero(prediction) == 1:
             
@@ -60,7 +55,7 @@ def check_emotion(frame, res):
         return
 
 ok, frame = video_cap.read()
-result =[""]
+result =["Neutral", "Neutral", "Neutral"]
 t = threading.Thread(target=check_emotion, args=(frame, result))
 t.start()
 show_emotion = False
@@ -83,11 +78,16 @@ while True:
     )
 
 
+    find_emot = {em:result[-3:].count(em) for em in result[-3:]}
+    if 'Sad' in find_emot:
+        find_emot = 'Sad'
+    else: find_emot = sorted(find_emot, key = lambda t: t[1])[-1]
+
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    cv2.putText(frame, result[-1], (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, find_emot, (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.imshow('Video',frame)
         
 

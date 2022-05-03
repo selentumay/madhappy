@@ -36,7 +36,7 @@ def viz_training_results(history, epochs=50):
     plt.plot(epochs_range, val_loss, label='Validation Loss', color='violet')
     plt.legend(loc='upper right')
     plt.title('Training and Validation Loss')
-
+    
     plt.savefig('graphs/train_results.png')
 
 
@@ -67,7 +67,7 @@ def viz_test_confusion_matrix(y_pred, y_true, labels):
                     color="white" if cm[i, j] > thresh else "black")
 
     fig.tight_layout()
-    
+    plt.show()
     fig.savefig('graphs/test_confusion_matrix.png')
 
 def viz_model_summary(model):
@@ -86,8 +86,11 @@ def main():
     viz_model_summary(model=model)
     viz_model(model=model)
 
-    model, history = trainModel(model=model, x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, epochs=50)
-    viz_training_results(history=history, epochs=50)
+    #model, history = trainModel(model=model, x_train=x_train, y_train=y_train, x_val=x_val, y_val=y_val, epochs=20)
+    #viz_training_results(history=history, epochs=20)
+
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['Accuracy'])
+    model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e017-acc0.8708.h5')
 
     y_pred, y_true = testModel(model=model, x_test=x_test, y_test=y_test)
     test_acc = accuracy_score(y_true, y_pred)
