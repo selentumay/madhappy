@@ -31,7 +31,7 @@ def check_emotion(frame, res):
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
         
         face = gray[y1:y2, x1:x2]
@@ -77,6 +77,9 @@ while True:
         minNeighbors=4
     )
 
+    if len(result) > 10:
+        result = result[-8:]
+
 
     find_emot = {em:result[-3:].count(em) for em in result[-3:]}
     if 'Sad' in find_emot:
@@ -86,7 +89,7 @@ while True:
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
     cv2.putText(frame, find_emot, (90, 180), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.imshow('Video',frame)
         
