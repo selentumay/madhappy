@@ -8,7 +8,7 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e076-acc0.8999.h5')
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e011-acc0.8602.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
@@ -48,14 +48,14 @@ def check_emotion(frame, res):
         print(prediction)
 
 
-        #if np.count_nonzero(prediction) == 1:
+        if np.count_nonzero(prediction) == 1:
             
-        i = int(np.argmax(prediction))
+            i = int(np.argmax(prediction))
 
-        result.append(EMOTION_CLASSIFICATION[i])
+            result.append(EMOTION_CLASSIFICATION[i])
 
-        #else:
-        #    result.append('Neutral')
+        else:
+            result.append('Neutral')
             
         return
 
