@@ -8,7 +8,7 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e049-acc0.8962.h5')
+model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e076-acc0.8999.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
@@ -40,12 +40,23 @@ def check_emotion(frame, res):
         cropped_exp = np.expand_dims(cropped, axis=0)
         cropped_float = cropped_exp.astype(float)
 
-        
         prediction = model.predict(cropped_float)
         print(prediction)
+
+        numzeros = 0
+
+        print(prediction)
+
+
+        #if np.count_nonzero(prediction) == 1:
+            
         i = int(np.argmax(prediction))
 
         result.append(EMOTION_CLASSIFICATION[i])
+
+        #else:
+        #    result.append('Neutral')
+            
         return
 
 ok, frame = video_cap.read()
@@ -59,8 +70,6 @@ while True:
     ok, frame = video_cap.read()
     
     if not(t.is_alive()):
-        print(result)
-  
         t.join()
 
         t = threading.Thread(target=check_emotion, args=(frame, result))
@@ -72,6 +81,8 @@ while True:
         scaleFactor=1.1,
         minNeighbors=4
     )
+
+
     if len(faces) > 0:
         (x1, y1, w, h) = faces[0]
         x2, y2 = x1 + w, y1 + h
