@@ -8,7 +8,7 @@ from cnn import generateModel
 
 
 model = generateModel()
-model.load_weights('/Users/giacomomarino/cs1430/madhappy/data/checkpoints/your.weights.e017-acc0.8708.h5')
+model.load_weights('/Users/selentumay/cs1430/madhappy/data/checkpoints/your.weights.e017-acc0.8708.h5')
 model.summary()
 
 cv2.ocl.setUseOpenCL(False)
@@ -89,6 +89,8 @@ happy = cv2.imread('filters/beaches.png')
 
 while True:
     ok, frame = video_cap.read()
+    if frame.any() == None:
+        continue
     frame_h, frame_w, _ = frame.shape
     
     if not(t.is_alive()):
